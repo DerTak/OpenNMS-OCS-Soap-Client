@@ -1,5 +1,7 @@
 *.class
 target/
+.idea/
+ocs.inventory.client.iml
 # Package Files #
 *.jar
 *.war
