@@ -15,7 +15,7 @@ public class OCSInventoryClientIntegrationTest {
     /**
      * The host.
      */
-    private String host = "192.168.56.101";
+    private String host = "http://192.168.56.101";
     /**
      * The login.
      */

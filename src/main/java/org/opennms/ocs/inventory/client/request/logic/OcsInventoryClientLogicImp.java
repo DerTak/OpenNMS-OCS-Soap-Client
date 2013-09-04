@@ -99,6 +99,17 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
     public void init(String host, String login, String password) throws SOAPException {
     	init(host, login, password, null, new ArrayList<String>());
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
+     * #init(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public void init(String host, String login, String password, String checksum) throws SOAPException {
+        init(host, login, password, checksum, new ArrayList<String>());
+    }
     
     /*
      * (non-Javadoc)
@@ -117,15 +128,16 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
         	m_checksum = checksum;
         }
         LOGGER.info("Using checksum value {}", m_checksum);
-        
-        if (tags != null) LOGGER.info("Including {} tags in request", tags.size());
-        m_tags = new ArrayList<Tag>();
-        for (String tagName : tags) {
-            Tag aTag = new Tag();
-            aTag.setValue(tagName);
-            m_tags.add(aTag);
-        }
 
+        m_tags = new ArrayList<Tag>();
+        if (tags != null) {
+            LOGGER.info("Including {} tags in request", tags.size());
+            for (String tagName : tags) {
+                Tag aTag = new Tag();
+                aTag.setValue(tagName);
+                m_tags.add(aTag);
+            }
+        }
         m_url = String.format("%s/ocsinterface", host);
         m_urlNameSpaceXml = String.format("%s/Apache/Ocsinventory/Interface", host);
 

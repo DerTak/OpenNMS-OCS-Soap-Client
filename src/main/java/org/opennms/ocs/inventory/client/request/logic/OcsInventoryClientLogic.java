@@ -35,6 +35,17 @@ public interface OcsInventoryClientLogic {
     void init(String host, String login, String password, String checksum, List<String> tags) throws SOAPException;
 
     /**
+     * Init void.
+     *
+     * @param host the host
+     * @param login the login
+     * @param password the password
+     * @param checksum the checksum
+     * @throws SOAPException the sOAP exception
+     */
+    void init(String host, String login, String password, String checksum) throws SOAPException;
+
+    /**
      * Gets the computers.
      *
      * @return the computers

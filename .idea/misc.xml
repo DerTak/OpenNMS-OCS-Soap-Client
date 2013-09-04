@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EclipseCodeFormatter">
+    <option name="defaultSettings" value="true" />
+    <option name="id" value="1372787804743" />
+    <option name="name" value="default" />
+  </component>
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="IdProvider" IDEtalkID="791DDC46B8882EE084104215A18022FE" />
+  <component name="JavaDocConfiguration_1.0.5">
+    <GENERAL>
+      <MODE>UPDATE</MODE>
+      <OVERRIDDEN_METHODS>false</OVERRIDDEN_METHODS>
+      <SPLITTED_CLASS_NAME>true</SPLITTED_CLASS_NAME>
+      <LEVELS>
+        <LEVEL>TYPE</LEVEL>
+        <LEVEL>METHOD</LEVEL>
+        <LEVEL>FIELD</LEVEL>
+      </LEVELS>
+      <VISIBILITIES>
+        <VISIBILITY>PROTECTED</VISIBILITY>
+        <VISIBILITY>PUBLIC</VISIBILITY>
+      </VISIBILITIES>
+    </GENERAL>
+    <TEMPLATES>
+      <CLASSES>
+        <CLASS>
+          <KEY>^.*(public|protected|private)*.+interface\s+\w+.*</KEY>
+          <VALUE>/**\n
+ * The interface $name.\n
+ */</VALUE>
+        </CLASS>
+        <CLASS>
+          <KEY>^.*(public|protected|private)*.+enum\s+\w+.*</KEY>
+          <VALUE>/**\n
+ * The enum $name.\n
+ */</VALUE>
+        </CLASS>
+        <CLASS>
+          <KEY>^.*(public|protected|private)*.+class\s+\w+.*</KEY>
+          <VALUE>/**\n
+ * The type $name.\n
+ */</VALUE>
+        </CLASS>
+        <CLASS>
+          <KEY>.+</KEY>
+          <VALUE>/**\n
+ * The type $name.\n
+ */</VALUE>
+        </CLASS>
+      </CLASSES>
+      <CONSTRUCTORS>
+        <CONSTRUCTOR>
+          <KEY>.+</KEY>
+          <VALUE>/**\n
+ * Instantiates a new $name.\n
+
+     #if(!$element.parameterList.parameters.isEmpty())
+         *\n
+     #end
+     #foreach($parameter in $element.parameterList.parameters)
+         * @param $parameter.name the $paramNames[$parameter.name]\n
+     #end
+
+     #if(!$element.throwsList.referenceElements.isEmpty())
+         *\n
+     #end
+     #foreach($exception in $element.throwsList.referenceElements)
+         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
+     #end
+
+ */</VALUE>
+        </CONSTRUCTOR>
+      </CONSTRUCTORS>
+      <METHODS>
+        <METHOD>
+          <KEY>^.*(public|protected|private)*\s*.*(\w(\s*&lt;.+&gt;)*)+\s+get\w+\s*\(.*\).+</KEY>
+          <VALUE>/**\n
+ * Gets $partName.\n
+
+     #if(!$element.parameterList.parameters.isEmpty())
+         *\n
+     #end
+     #foreach($parameter in $element.parameterList.parameters)
+         * @param $parameter.name the $paramNames[$parameter.name]\n
+     #end
+
+     #if($isNotVoid)
+         *\n
+         * @return the $partName\n
+     #end
+
+     #if(!$element.throwsList.referenceElements.isEmpty())
+         *\n
+     #end
+     #foreach($exception in $element.throwsList.referenceElements)
+         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
+     #end
+
+ */</VALUE>
+        </METHOD>
+        <METHOD>
+          <KEY>^.*(public|protected|private)*\s*.*(void|\w(\s*&lt;.+&gt;)*)+\s+set\w+\s*\(.*\).+</KEY>
+          <VALUE>/**\n
+ * Sets $partName.\n
+
+     #if(!$element.parameterList.parameters.isEmpty())
+         *\n
+     #end
+     #foreach($parameter in $element.parameterList.parameters)
+         * @param $parameter.name the $paramNames[$parameter.name]\n
+     #end
+
+     #if($isNotVoid)
+         *\n
+         * @return the $partName\n
+     #end
+
+     #if(!$element.throwsList.referenceElements.isEmpty())
+         *\n
+     #end
+     #foreach($exception in $element.throwsList.referenceElements)
+         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
+     #end
+
+ */</VALUE>
+        </METHOD>
+        <METHOD>
+          <KEY>^.*((public\s+static)|(static\s+public))\s+void\s+main\s*\(\s*String\s*(\[\s*\]|\.\.\.)\s+\w+\s*\).+</KEY>
+          <VALUE>/**\n
+ * The entry point of application.\n
+
+     #if(!$element.parameterList.parameters.isEmpty())
+         *\n
+     #end
+
+     * @param $element.parameterList.parameters[0].name the input arguments\n
+
+     #if(!$element.throwsList.referenceElements.isEmpty())
+         *\n
+     #end
+     #foreach($exception in $element.throwsList.referenceElements)
+         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
+     #end
+
+ */</VALUE>
+        </METHOD>
+        <METHOD>
+          <KEY>.+</KEY>
+          <VALUE>/**\n
+ * $name#if($partName.isEmpty()) $return#end.\n
+
+     #if(!$element.parameterList.parameters.isEmpty())
+         *\n
+     #end
+     #foreach($parameter in $element.parameterList.parameters)
+         * @param $parameter.name the $paramNames[$parameter.name]\n
+     #end
+
+     #if($isNotVoid)
+         *\n
+         * @return the $return\n
+     #end
+
+     #if(!$element.throwsList.referenceElements.isEmpty())
+         *\n
+     #end
+     #foreach($exception in $element.throwsList.referenceElements)
+         * @throws $exception.referenceName the $exceptionNames[$exception.referenceName]\n
+     #end
+
+ */</VALUE>
+        </METHOD>
+      </METHODS>
+      <FIELDS>
+        <FIELD>
+          <KEY>^.*(public|protected|private)*.+static.*(\w\s\w)+.+</KEY>
+          <VALUE>/**\n
+ * The constant $element.getName().\n
+ */</VALUE>
+        </FIELD>
+        <FIELD>
+          <KEY>^.*(public|protected|private)*.*(\w\s\w)+.+</KEY>
+          <VALUE>/**\n
+ * The $name.\n
+ */</VALUE>
+        </FIELD>
+        <FIELD>
+          <KEY>.+</KEY>
+          <VALUE>/**\n
+ * The $name.\n
+ */</VALUE>
+        </FIELD>
+      </FIELDS>
+    </TEMPLATES>
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="ideadoc.IdeaDocConfigurationGUI">
+    <doccer class="nl.piraya.ideadoc.doccer.DoccerForOverridingMethod" enabled="true">
+      <template>/**$s${@inheritDoc}$s$*/</template>
+    </doccer>
+    <doccer class="nl.piraya.ideadoc.doccer.DoccerForGetter" enabled="true">
+      <template>/**$n$$s$*$s$Getter$s$for$s$property$s$'${PROPERTY_NAME}'.$n$$s$*$n$$s$*$s$@return$s$Value$s$for$s$property$s$'${PROPERTY_NAME}'.$n$$s$*/</template>
+    </doccer>
+    <doccer class="nl.piraya.ideadoc.doccer.DoccerForSetter" enabled="true">
+      <template>/**$n$$s$*$s$Setter$s$for$s$property$s$'${PROPERTY_NAME}'.$n$$s$*$n$$s$*$s$@param$s$${PARAM_NAME}$s$Value$s$to$s$set$s$for$s$property$s$'${PROPERTY_NAME}'.$n$$s$*/</template>
+    </doccer>
+    <doccer class="nl.piraya.ideadoc.doccer.DoccerForDefaultConstructor" enabled="true">
+      <template>/**$s$Constructs$s$a$s$new$s$${CLASS_NAME}.$s$*/</template>
+    </doccer>
+    <doccer class="nl.piraya.ideadoc.doccer.DoccerForPrivateDefaultConstructor" enabled="true">
+      <template>/**$s$Do$s$not$s$instantiate$s$${CLASS_NAME}.$s$*/</template>
+    </doccer>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+
