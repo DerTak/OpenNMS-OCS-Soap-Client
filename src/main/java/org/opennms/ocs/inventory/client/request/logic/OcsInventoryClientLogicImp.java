@@ -118,7 +118,7 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
         }
         LOGGER.info("Using checksum value {}", m_checksum);
         
-        LOGGER.info("Including {} tags in request", tags.size());
+        if (tags != null) LOGGER.info("Including {} tags in request", tags.size());
         m_tags = new ArrayList<Tag>();
         for (String tagName : tags) {
             Tag aTag = new Tag();
