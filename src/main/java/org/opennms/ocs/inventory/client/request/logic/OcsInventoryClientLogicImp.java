@@ -3,6 +3,8 @@ package org.opennms.ocs.inventory.client.request.logic;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -26,6 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.opennms.ocs.inventory.client.request.Engine;
 import org.opennms.ocs.inventory.client.request.Request;
 import org.opennms.ocs.inventory.client.request.RequestFactory;
+import org.opennms.ocs.inventory.client.request.Tag;
 import org.opennms.ocs.inventory.client.response.Computers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +62,10 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
      */
     private static String m_checksum;
     /**
+     * The tags to include in the request
+     */
+    private static List<Tag> m_tags;
+    /**
      * The soap connection.
      */
     private SOAPConnection soapConnection;
@@ -90,7 +97,7 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
      * #init(java.lang.String, java.lang.String, java.lang.String)
      */
     public void init(String host, String login, String password) throws SOAPException {
-    	init(host, login, password, null);
+    	init(host, login, password, null, new ArrayList<String>());
     }
     
     /*
@@ -99,7 +106,7 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
      * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
      * #init(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public void init(String host, String login, String password, String checksum) throws SOAPException {
+    public void init(String host, String login, String password, String checksum, List<String> tags) throws SOAPException {
 
         LOGGER.info("Initialization OCS Inventory Client");
         LOGGER.info("Init parameters: host=" + host + ", login=" + login);
@@ -110,6 +117,14 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
         	m_checksum = checksum;
         }
         LOGGER.info("Using checksum value {}", m_checksum);
+        
+        LOGGER.info("Including {} tags in request", tags.size());
+        m_tags = new ArrayList<Tag>();
+        for (String tagName : tags) {
+            Tag aTag = new Tag();
+            aTag.setValue(tagName);
+            m_tags.add(aTag);
+        }
 
         m_url = String.format("%s/ocsinterface", host);
         m_urlNameSpaceXml = String.format("%s/Apache/Ocsinventory/Interface", host);
@@ -153,7 +168,7 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
             }
 
             content = soapElement.getTextContent();
-            // LOGGER.info("For offset " + offset + " got content: " + content);
+//            LOGGER.info("For offset " + offset + " got content: " + content);
             InputStream is = new ByteArrayInputStream(content.getBytes());
             Computers computersFromThisRequest = (Computers) jaxbMarshaller.unmarshal(is);
             if (computersFromThisRequest.getComputers().isEmpty()) {
@@ -202,6 +217,7 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
         request.setEngine(eng);
         request.setAskingfor(ASKINGFOR);
         request.setChecksum(m_checksum);
+        request.getTag().addAll(m_tags);
         request.setOffset(Integer.toString(offset));
 //        request.setWanted(WANTED);
         JAXBContext jaxbContext = JAXBContext.newInstance(Request.class);
