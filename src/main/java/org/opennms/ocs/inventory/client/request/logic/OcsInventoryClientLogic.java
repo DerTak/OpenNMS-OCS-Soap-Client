@@ -1,5 +1,7 @@
 package org.opennms.ocs.inventory.client.request.logic;
 
+import java.util.List;
+
 import javax.xml.soap.SOAPException;
 
 import org.opennms.ocs.inventory.client.response.Computers;
@@ -30,7 +32,7 @@ public interface OcsInventoryClientLogic {
      * @param checksum the checksum
      * @throws SOAPException 
      */
-    void init(String host, String login, String password, String checksum) throws SOAPException;
+    void init(String host, String login, String password, String checksum, List<String> tags) throws SOAPException;
 
     /**
      * Gets the computers.
