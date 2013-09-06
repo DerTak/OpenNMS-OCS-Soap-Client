@@ -1,7 +1,5 @@
 package org.opennms.ocs.inventory.client.request.logic;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +7,6 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
@@ -29,8 +26,6 @@ import org.opennms.ocs.inventory.client.request.Engine;
 import org.opennms.ocs.inventory.client.request.Request;
 import org.opennms.ocs.inventory.client.request.RequestFactory;
 import org.opennms.ocs.inventory.client.request.Tag;
-import org.opennms.ocs.inventory.client.response.Computers;
-import org.opennms.ocs.inventory.client.response.snmp.SnmpDevices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,13 +34,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author <A HREF="mailto:sergey.ovsyuk@gmail.com">Sergey Ovsyuk </A>
  */
-public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
+class GeneralClientLogic {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(OcsInventoryClientLogicSnmpImp.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(GeneralClientLogic.class);
     /**
      * The url.
      */
-    private static String m_url;
+    protected static String m_url;
     /**
      * The url name space xml.
      */
@@ -69,7 +64,7 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
     /**
      * The soap connection.
      */
-    private SOAPConnection soapConnection;
+    protected SOAPConnection soapConnection;
     /**
      * The Constant ENGINE.
      */
@@ -77,16 +72,19 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
     /**
      * The Constant ASKINGFOR.
      */
-    private static final String ASKINGFOR = "SNMP_INVENTORY";
+    protected String m_askingfor;
     /**
      * The Constant CHECKSUM.
      */
     private static final String DEFAULT_CHECKSUM = "4099";
-
+    /**
+     * The Constant WANTED.
+     */
+    private static final String WANTED = "119587";
     /**
      * The Constant WEB__SERVICE_METHOD.
      */
-    private static final String WEB__SERVICE_METHOD = "get_snmp_V1";
+    protected String m_web_service_method;
 
     /*
      * (non-Javadoc)
@@ -94,7 +92,7 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
      * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
      * #init(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void init(String host, String login, String password) throws SOAPException {
+    protected void init(String host, String login, String password) throws SOAPException {
     	init(host, login, password, null, new ArrayList<String>());
     }
 
@@ -104,8 +102,8 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
      * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
      * #init(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    @Override
-    public void init(String host, String login, String password, String checksum) throws SOAPException {
+
+    protected void init(String host, String login, String password, String checksum) throws SOAPException {
         init(host, login, password, checksum, new ArrayList<String>());
     }
     
@@ -115,7 +113,7 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
      * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
      * #init(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public void init(String host, String login, String password, String checksum, List<String> tags) throws SOAPException {
+    protected void init(String host, String login, String password, String checksum, List<String> tags) throws SOAPException {
 
         LOGGER.info("Initialization OCS Inventory Client");
         LOGGER.info("Init parameters: host=" + host + ", login=" + login);
@@ -144,62 +142,14 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
-     * #getComputers()
-     */
-    public SnmpDevices getSnmpDevices() throws SOAPException, Exception {
-    	SnmpDevices snmpDevices = new SnmpDevices();
-        JAXBContext jaxbContext = JAXBContext.newInstance(SnmpDevices.class);
-        Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
-
-        Integer offset = 0;
-        Boolean isEverythingRequested = false;
-        while (!isEverythingRequested) {
-            LOGGER.info("Prepare call web service from OCS server with offset " + offset);
-            SOAPMessage soapResponse;
-
-            soapResponse = soapConnection.call(createSOAPRequest(offset), m_url);
-
-            LOGGER.info("Web service are already called from OCS server, parse response");
-            SOAPBody spBody = soapResponse.getSOAPBody();
-            SOAPElement soapElement = (SOAPElement) spBody.getChildElements().next();
-
-            String content;
-            for (int i = 1; i < soapElement.getChildNodes().getLength() - 1; i++) {
-                content = soapElement.getChildNodes().item(i).getTextContent();
-
-                if (Base64.isBase64(content)) {
-                    content = new String(Base64.decodeBase64(content.getBytes()));
-                }
-                soapElement.getChildNodes().item(i).setTextContent(content + "\n");
-            }
-
-            content = soapElement.getTextContent();
-            LOGGER.info("For offset " + offset + " got content: " + content);
-            InputStream is = new ByteArrayInputStream(content.getBytes());
-            SnmpDevices  snmpDevicesFromThisRequest = (SnmpDevices) jaxbMarshaller.unmarshal(is);
-            if (snmpDevicesFromThisRequest.getSNMPDevices().isEmpty()) {
-                isEverythingRequested = true;
-            }
-            snmpDevices.getSNMPDevices().addAll(snmpDevicesFromThisRequest.getSNMPDevices());
-
-            offset++;
-        }
-        	
-        LOGGER.info("OCS Inventory Client provided " + snmpDevices.getSNMPDevices().size() + " computers.");
-        return snmpDevices;
-    }
-
+    
     /**
      * Creates the soap request.
      *
      * @return the SOAP message
      * @throws Exception the exception
      */
-    private static SOAPMessage createSOAPRequest(Integer offset) throws Exception {
+    protected SOAPMessage createSOAPRequest(Integer offset) throws Exception {
         LOGGER.info("Create SOAP request");
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
@@ -226,17 +176,18 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
         Engine eng = new Engine();
         eng.setValue(ENGINE);
         request.setEngine(eng);
-        request.setAskingfor(ASKINGFOR);
+        request.setAskingfor(m_askingfor);
         request.setChecksum(m_checksum);
         request.getTag().addAll(m_tags);
         request.setOffset(Integer.toString(offset));
+//        request.setWanted(WANTED);
         JAXBContext jaxbContext = JAXBContext.newInstance(Request.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         StringWriter writer = new StringWriter();
         jaxbMarshaller.marshal(request, writer);
         SOAPBody soapBody = envelope.getBody();
 
-        QName bodyName = new QName(m_urlNameSpaceXml, WEB__SERVICE_METHOD, XMLConstants.DEFAULT_NS_PREFIX);
+        QName bodyName = new QName(m_urlNameSpaceXml, m_web_service_method, XMLConstants.DEFAULT_NS_PREFIX);
         SOAPBodyElement bodyElement = soapBody.addBodyElement(bodyName);
         SOAPElement soapBodyElem1 = bodyElement.addChildElement("c-gensym3");
         soapBodyElem1.setTextContent(writer.toString());
@@ -244,11 +195,6 @@ public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
         soapMessage.saveChanges();
         LOGGER.info("SOAP request created");
         return soapMessage;
-    }
+    }    
 
-	@Override
-	public Computers getComputers() throws SOAPException, Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
