@@ -10,15 +10,15 @@ public class OCSInventoryClientIntegrationSnmpTest {
     /**
      * The host.
      */
-    private String host = "https://ocs-test.bonnierdigitalservices.se";
+    private String host = "http://192.168.56.101";
     /**
      * The login.
      */
-    private String login = "OpenNMS_System";
+    private String login = "dev";
     /**
      * The password.
      */
-    private String password = "0p3nNMS!";
+    private String password = "dev";
 
 
     @Test
