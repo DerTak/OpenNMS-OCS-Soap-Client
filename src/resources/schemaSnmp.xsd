@@ -1,0 +1,45 @@
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="SNMP_DEVICES">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="SNMP_DEVICE">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="SNMP">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="CHECKSUM" type="xsd:int" />
+                    <xsd:element name="CONTACT" type="xsd:string" />
+                    <xsd:element name="DESCRIPTION" type="xsd:string" />
+                    <xsd:element name="DOMAIN" type="xsd:string" />
+                    <xsd:element name="ID" type="xsd:int" />
+                    <xsd:element name="IPADDR" type="xsd:string" />
+                    <xsd:element name="LASTDATE" type="xsd:dateTime" />
+                    <xsd:element name="LOCATION" type="xsd:string" />
+                    <xsd:element name="MACADDR" type="xsd:string" />
+                    <xsd:element name="NAME" type="xsd:string" />
+                    <xsd:element name="SNMPDEVICEID" type="xsd:string" />
+                    <xsd:element name="TYPE" type="xsd:string" />
+                    <xsd:element name="UPTIME" type="xsd:string" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="SNMP_FANS">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="DESCRIPTION" type="xsd:string" />
+                    <xsd:element name="MANUFACTURER" type="xsd:string" />
+                    <xsd:element name="REFERENCE" type="xsd:string" />
+                    <xsd:element name="REVISION" type="xsd:string" />
+                    <xsd:element name="SERIALNUMBER" type="xsd:string" />
+                    <xsd:element name="TYPE" type="xsd:string" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

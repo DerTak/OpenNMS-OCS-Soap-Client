@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.soap.SOAPException;
 
 import org.opennms.ocs.inventory.client.response.Computers;
+import org.opennms.ocs.inventory.client.response.snmp.SnmpDevices;
 
 /**
  * The Interface OcsInventoryClientLogic.
@@ -53,4 +54,6 @@ public interface OcsInventoryClientLogic {
      * @throws SOAPException 
      */
     Computers getComputers() throws SOAPException, Exception;
+    
+    SnmpDevices getSnmpDevices() throws SOAPException, Exception;
 }

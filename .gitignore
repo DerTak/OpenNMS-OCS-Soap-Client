@@ -2,6 +2,9 @@
 target/
 .idea/
 ocs.inventory.client.iml
+.classpath
+.project
+.settings/
 # Package Files #
 *.jar
 *.war

@@ -39,9 +39,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author <A HREF="mailto:sergey.ovsyuk@gmail.com">Sergey Ovsyuk </A>
  */
-public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
+public class OcsInventoryClientLogicSnmpImp implements OcsInventoryClientLogic {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(OcsInventoryClientLogicImp.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(OcsInventoryClientLogicSnmpImp.class);
     /**
      * The url.
      */
@@ -77,19 +77,16 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
     /**
      * The Constant ASKINGFOR.
      */
-    private static final String ASKINGFOR = "INVENTORY";
+    private static final String ASKINGFOR = "SNMP_INVENTORY";
     /**
      * The Constant CHECKSUM.
      */
     private static final String DEFAULT_CHECKSUM = "4099";
-    /**
-     * The Constant WANTED.
-     */
-    private static final String WANTED = "119587";
+
     /**
      * The Constant WEB__SERVICE_METHOD.
      */
-    private static final String WEB__SERVICE_METHOD = "get_computers_V1";
+    private static final String WEB__SERVICE_METHOD = "get_snmp_V1";
 
     /*
      * (non-Javadoc)
@@ -153,9 +150,9 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
      * org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic
      * #getComputers()
      */
-    public Computers getComputers() throws SOAPException, Exception {
-        Computers computers = new Computers();
-        JAXBContext jaxbContext = JAXBContext.newInstance(Computers.class);
+    public SnmpDevices getSnmpDevices() throws SOAPException, Exception {
+    	SnmpDevices snmpDevices = new SnmpDevices();
+        JAXBContext jaxbContext = JAXBContext.newInstance(SnmpDevices.class);
         Unmarshaller jaxbMarshaller = jaxbContext.createUnmarshaller();
 
         Integer offset = 0;
@@ -181,18 +178,19 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
             }
 
             content = soapElement.getTextContent();
-//            LOGGER.info("For offset " + offset + " got content: " + content);
+            LOGGER.info("For offset " + offset + " got content: " + content);
             InputStream is = new ByteArrayInputStream(content.getBytes());
-            Computers computersFromThisRequest = (Computers) jaxbMarshaller.unmarshal(is);
-            if (computersFromThisRequest.getComputers().isEmpty()) {
+            SnmpDevices  snmpDevicesFromThisRequest = (SnmpDevices) jaxbMarshaller.unmarshal(is);
+            if (snmpDevicesFromThisRequest.getSNMPDevices().isEmpty()) {
                 isEverythingRequested = true;
             }
-            computers.getComputers().addAll(computersFromThisRequest.getComputers());
+            snmpDevices.getSNMPDevices().addAll(snmpDevicesFromThisRequest.getSNMPDevices());
 
             offset++;
         }
-        LOGGER.info("OCS Inventory Client provided " + computers.getComputers().size() + " computers.");
-        return computers;
+        	
+        LOGGER.info("OCS Inventory Client provided " + snmpDevices.getSNMPDevices().size() + " computers.");
+        return snmpDevices;
     }
 
     /**
@@ -232,7 +230,6 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
         request.setChecksum(m_checksum);
         request.getTag().addAll(m_tags);
         request.setOffset(Integer.toString(offset));
-//        request.setWanted(WANTED);
         JAXBContext jaxbContext = JAXBContext.newInstance(Request.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         StringWriter writer = new StringWriter();
@@ -250,7 +247,7 @@ public class OcsInventoryClientLogicImp implements OcsInventoryClientLogic {
     }
 
 	@Override
-	public SnmpDevices getSnmpDevices() throws SOAPException, Exception {
+	public Computers getComputers() throws SOAPException, Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
