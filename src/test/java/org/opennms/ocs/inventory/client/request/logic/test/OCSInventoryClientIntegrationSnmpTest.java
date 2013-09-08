@@ -2,8 +2,7 @@ package org.opennms.ocs.inventory.client.request.logic.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogic;
-import org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogicSnmpImp;
+import org.opennms.ocs.inventory.client.request.logic.OcsInventoryClientLogicExecuter;
 import org.opennms.ocs.inventory.client.response.snmp.SnmpDevices;
 
 public class OCSInventoryClientIntegrationSnmpTest {
@@ -24,12 +23,10 @@ public class OCSInventoryClientIntegrationSnmpTest {
 
     @Test
     public void test() {
-        OcsInventoryClientLogic ocsInventoryClientLogic = new OcsInventoryClientLogicSnmpImp();
+    	OcsInventoryClientLogicExecuter executer = new OcsInventoryClientLogicExecuter();
         try {
-            ocsInventoryClientLogic.init(host, login, password);
 
-            SnmpDevices snmpDevices = ocsInventoryClientLogic.getSnmpDevices();
-            
+        	SnmpDevices  snmpDevices = executer.getSnmpDevices(host, login, password);         
             Assert.assertNotNull(snmpDevices);
             System.out.println(snmpDevices.getSNMPDevices());
 
