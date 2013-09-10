@@ -115,7 +115,7 @@ public class GetSnmpDevicesLogic extends GeneralClientLogic {
             }
 
             content = soapElement.getTextContent();
-            LOGGER.info("For offset " + offset + " got content: " + content);
+//            LOGGER.info("For offset " + offset + " got content: " + content);
             InputStream is = new ByteArrayInputStream(content.getBytes());
             SnmpDevices  snmpDevicesFromThisRequest = (SnmpDevices) jaxbMarshaller.unmarshal(is);
             if (snmpDevicesFromThisRequest.getSNMPDevices().isEmpty()) {

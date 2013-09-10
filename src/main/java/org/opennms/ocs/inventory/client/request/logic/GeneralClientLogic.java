@@ -80,7 +80,7 @@ class GeneralClientLogic {
     /**
      * The Constant WANTED.
      */
-    private static final String WANTED = "119587";
+    private static final String WANTED = "1";
     /**
      * The Constant WEB__SERVICE_METHOD.
      */
@@ -180,7 +180,7 @@ class GeneralClientLogic {
         request.setChecksum(m_checksum);
         request.getTag().addAll(m_tags);
         request.setOffset(Integer.toString(offset));
-//        request.setWanted(WANTED);
+        request.setWanted(WANTED);
         JAXBContext jaxbContext = JAXBContext.newInstance(Request.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         StringWriter writer = new StringWriter();

@@ -54,11 +54,6 @@ public class GetComputersLogic extends GeneralClientLogic {
      * #init(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     
-    public void init(String host, String login, String password, String checksum) throws SOAPException {
-        super.init(host, login, password, checksum, new ArrayList<String>());
-        initRequestParameter();
-    }
-    
     /*
      * (non-Javadoc)
      * @see
@@ -68,7 +63,12 @@ public class GetComputersLogic extends GeneralClientLogic {
     public void init(String host, String login, String password, String checksum, List<String> tags) throws SOAPException {
     	super.init(host, login, password, checksum, tags);
     	initRequestParameter();
+    
+    }
 
+    public void init(String host, String login, String password, String checksum) throws SOAPException {
+        super.init(host, login, password, checksum, new ArrayList<String>());
+        initRequestParameter();
     }
     
     /**
