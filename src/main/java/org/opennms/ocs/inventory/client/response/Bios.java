@@ -28,7 +28,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="BVERSION" _type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="SMANUFACTURER" _type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="SMODEL" _type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="SSN" _type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="SSN" _type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="TYPE" _type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -64,7 +64,7 @@ public class Bios {
     protected String _sModel;
 
     @XmlElement(name = "SSN")
-    protected int _ssn;
+    protected String _ssn;
 
     @XmlElement(name = "TYPE", required = true)
     protected String _type;
@@ -186,14 +186,14 @@ public class Bios {
     /**
      * Gets the value of the _ssn property.
      */
-    public int getSSN() {
+    public String getSSN() {
         return _ssn;
     }
 
     /**
      * Sets the value of the _ssn property.
      */
-    public void setSSN(int value) {
+    public void setSSN(String value) {
         this._ssn = value;
     }
 
