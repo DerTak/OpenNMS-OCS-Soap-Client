@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * <p>
@@ -34,6 +35,9 @@ public class Entry {
 
     @XmlAttribute(name = "Name")
     protected String name;
+    
+    @XmlValue
+    protected String value;
 
     /**
      * Gets the value of the name property.
@@ -54,12 +58,18 @@ public class Entry {
         this.name = value;
     }
 
-    @Override
-    public String toString() {
-        return "Entry{" +
-                "name='" + name + '\'' +
-                '}';
-    }
+    public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@Override
+	public String toString() {
+		return "Entry [name=" + name + ", value=" + value + "]";
+	}
 }
 
 

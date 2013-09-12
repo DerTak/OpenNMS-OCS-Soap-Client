@@ -3,6 +3,9 @@
  */
 package org.opennms.ocs.inventory.client.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -39,37 +42,40 @@ import javax.xml.bind.annotation.XmlType;
  * @author <A HREF="mailto:sergey.ovsyuk@gmail.com">Sergey Ovsyuk </A>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = { "_entry" })
+@XmlType(name = "", propOrder = { "_entries" })
 public class AccountInfo {
 
-    @XmlElement(name = "Entry", required = true)
-    protected Entry _entry;
+    @XmlElement(name = "ENTRY", required = true)
+    protected List<Entry> _entries;
 
     /**
-     * Gets the value of the _entry property.
+     * Gets the value of the _entries property.
      * 
      * @return possible object is
      *         {@link Computers.Computer.AccountInfo.Entry }
      */
-    public Entry getEntry() {
-        return _entry;
+    public List<Entry> getEntries() {
+    	if(_entries == null){
+    		_entries = new ArrayList<Entry>();
+    	}
+        return _entries;
     }
 
     /**
-     * Sets the value of the _entry property.
+     * Sets the value of the _entries property.
      * 
      * @param value
      *            allowed object is
      *            {@link Computers.Computer.AccountInfo.Entry }
      */
-    public void setEntry(Entry value) {
-        this._entry = value;
+    public void setEntries(List<Entry> value) {
+        this._entries = value;
     }
 
     @Override
     public String toString() {
         return "AccountInfo{" +
-                "_entry=" + _entry +
+                "_entries=" + _entries +
                 '}';
     }
 }
