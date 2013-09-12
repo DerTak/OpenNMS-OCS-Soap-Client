@@ -79,6 +79,8 @@ class GeneralClientLogic {
     private static final String DEFAULT_CHECKSUM = "4099";
     /**
      * The Constant WANTED.
+     * A value of 1 means "also return the ACCOUNTINFO element"
+     * This enables us to get the TAG and custom field values
      */
     private static final String WANTED = "1";
     /**
